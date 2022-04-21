@@ -26,10 +26,10 @@ const valid_data = [{
 const url = '/api/vehicles'
 describe('Vehicles API', () => {
     it.each`
-    scenario         | data          | status
-    ${'valid'}       | ${valid_data} | ${200}
-    ${'empty array'} | ${[]}         | ${204}
-    ${'null'}        |${null}        | ${204}
+        scenario         | data          | status
+        ${'valid'}       | ${valid_data} | ${200}
+        ${'empty array'} | ${[]}         | ${204}
+        ${'null'}        |${null}        | ${204}
     `('should return status $status for given $scenario', async ({scenario, data, status}) => {
         const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(data)
 
@@ -38,4 +38,13 @@ describe('Vehicles API', () => {
 
         mock_getVehicles.mockRestore();
     })
+
+    it('should return object array with key \'make\' and \'model\' array for valid data', async () => {
+        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(valid_data)
+        const response = await request(app).get(url);
+
+        expect(Object.keys(response.body[0])).toEqual(['make', 'models'])
+
+        mock_getVehicles.mockRestore();
+    });
 });
