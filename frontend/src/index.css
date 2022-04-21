@@ -1,0 +1,203 @@
+body {
+  padding: 0;
+  margin: 0;
+  background: #f1f1f1;
+  font-family: sans-serif;
+}
+
+header {
+  background: #1a3035;
+  padding: 20px 0 15px;
+  border-bottom: 1px solid #dedede;
+}
+
+.mobile_view_txt {
+  text-align: center;
+  display: block;
+  margin: 50px 0 14px;
+  color: #1a3035;
+}
+
+.logo {
+  display: block;
+  width: 120px;
+  margin: auto;
+}
+
+.logo svg {
+  fill: #0c6;
+}
+
+.wrap {
+  max-width: 500px;
+  margin: 0 auto 60px;
+  box-shadow: 0px 4px 0px hsl(0deg 0% 90%);
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 92%;
+  margin-top: 5%
+}
+
+.search_container {
+  padding: 19px 19px;
+}
+
+.select_field {
+  position: relative;
+}
+
+.w {
+  width: 300px;
+}
+
+.select_field label {
+  color: #555;
+  font-size: 12px;
+  position: absolute;
+  left: 17px;
+  top: 9px;
+}
+
+ol.search_results,
+.req_items {
+  list-style: decimal outside;
+  margin: 0;
+  padding: 0;
+}
+
+.req_items {
+  list-style: disc outside;
+}
+
+ol.search_results::before,
+.req_items::before {
+  display: block;
+  content: "Dataset search results:";
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 13px;
+  margin-top: 19px;
+}
+
+ul.req_items li {
+  margin-left: 15px;
+  font-size: 13px;
+  padding-bottom: 10px;
+}
+
+.req_items::before {
+  content: "Dataset requirements:";
+}
+
+select {
+  display: block;
+  width: 100%;
+  min-width: auto;
+  appearance: none;
+  padding: 26px 16px 11px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 9' fill='none' stroke='%23666' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.8678 1L8.46425 7L1.96216 1' stroke-width='2' stroke-miterlimit='10' stroke-linecap='round'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 14px;
+  background-position-x: calc(100% - 14px);
+  font-size: 16px;
+  min-width: auto;
+  color: black;
+  margin-bottom: -1px;
+  border-color: #bdbdbd;
+}
+
+.search_group div:first-child select,
+.search_group div:last-child select {
+  border-radius: 7px;
+}
+
+.search_group div:first-child select {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.search_group div:last-child select {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.search_btn {
+  background: #0c6;
+  border-radius: 30px;
+  display: block;
+  color: #fff;
+  border: 0;
+  padding: 14px 15px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.search_results li {
+  padding-bottom: 16px;
+  margin-left: 19px;
+}
+
+.search_results li span {
+  display: block;
+}
+
+.search_results li span::before {
+  display: inline-block;
+  content: "make: ";
+  font-weight: bold;
+  font-size: 13px;
+  margin-right: 5px;
+}
+
+.search_results li .make_result_span::before {
+  content: "Make: ";
+}
+
+.search_results li .model_result_span::before {
+  content: "Model: ";
+}
+
+.search_results li .year_result_span::before {
+  content: "Year: ";
+}
+
+.search_results li .price_result_span::before {
+  content: "Price: ";
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 25px;
+  border: 1px solid #e8e8e8;
+}
+
+thead th {
+  background-color: #1a3034;
+  color: #fff;
+  padding: 13px 20px 12px;
+}
+
+th {
+  background-color: green;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 16px 20px;
+}
+
+tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+tr:nth-child(odd) {
+  background-color: #e8e8e8;
+}
