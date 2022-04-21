@@ -1,6 +1,6 @@
 const app = require('../src/app');
 const request = require('supertest')
-const vehicleService = require('../vehicleService');
+const vehicleRepository = require('../vehicleRepository');
 
 const valid_data = [{
     "make": "Acura",
@@ -31,7 +31,7 @@ describe('Vehicles API', () => {
         ${'empty array'} | ${[]}         | ${204}
         ${'null'}        |${null}        | ${204}
     `('should return status $status for given $scenario', async ({scenario, data, status}) => {
-        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(data)
+        const mock_getVehicles = jest.spyOn(vehicleRepository, "getVehicles").mockResolvedValue(data)
 
         const response = await request(app).get(url);
         expect(response.status).toBe(status);
@@ -40,7 +40,7 @@ describe('Vehicles API', () => {
     })
 
     it('should return object array with key \'make\' and \'model\' array for valid data', async () => {
-        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(valid_data)
+        const mock_getVehicles = jest.spyOn(vehicleRepository, "getVehicles").mockResolvedValue(valid_data)
         const response = await request(app).get(url);
 
         expect(Object.keys(response.body[0])).toEqual(['make', 'models'])
