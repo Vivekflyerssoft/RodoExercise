@@ -25,21 +25,17 @@ const valid_data = [{
 },]
 const url = '/api/vehicles'
 describe('Vehicles API', () => {
-    it('should return 200 for data available', async () => {
-        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(valid_data)
+    it.each`
+    scenario         | data          | status
+    ${'valid'}       | ${valid_data} | ${200}
+    ${'empty array'} | ${[]}         | ${204}
+    ${'null'}        |${null}        | ${204}
+    `('should return status $status for given $scenario', async ({scenario, data, status}) => {
+        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue(data)
 
         const response = await request(app).get(url);
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(status);
 
         mock_getVehicles.mockRestore();
-    });
-
-    it('should return no content found for no vehicles found', async () => {
-        const mock_getVehicles = jest.spyOn(vehicleService, "getVehicles").mockResolvedValue([])
-
-        const response = await request(app).get(url);
-        expect(response.status).toBe(204);
-
-        mock_getVehicles.mockRestore();
-    });
+    })
 });
