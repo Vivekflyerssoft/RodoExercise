@@ -34,7 +34,7 @@ export const SearchContainer = () => {
         };
         setSearchResult(() => dummy_data)
         
-        // fetch(API_URLS.VEHICLES_SUGGESTION, 'http://localhost:3000/game', {
+        // fetch(API_URLS.VEHICLES_SUGGESTION, {
         //     method: 'POST',
         //     body: JSON.stringify(searchData),
         // })

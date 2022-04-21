@@ -1,6 +1,6 @@
 const app = require('../src/app');
 const request = require('supertest')
-const vehicleRepository = require('../vehicleRepository');
+const vehicleRepository = require('../src/vehicles/vehicleRepository');
 
 const valid_data = [{
     "make": "Acura",

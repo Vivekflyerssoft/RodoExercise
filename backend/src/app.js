@@ -4,7 +4,7 @@ const app = express();
 
 app.use(cors());
 
-const vehiclesService = require('../vehicleService');
+const vehiclesService = require('./vehicles/vehicleService');
 
 
 app.get("/", async (req, res) => {
@@ -18,6 +18,12 @@ app.get("/api/vehicles", async (req, res) => {
     } else {
         return res.status(204).send();
     }
+})
+
+app.get("/api/vehiclessuggestion", async (req, res) => {
+    const { make, model, price, year } = req.query;
+    const data = await vehiclesService.getVehicleSuggestion(make, model, price, year);    
+    return res.send(data);
 })
 
 app.use((req, res) => {
