@@ -34,8 +34,8 @@ const getVehicleSuggestion = async (make, model, price, year) => {
 
     const filteredData = data.filter(make_filter && year_filter && price_range_filter && model_filter)
 
-    const priceList = filteredData.map(x => x.price);
     const total_vehicle_count = filteredData.map(x => x.vehicle_count).reduce((pre, curr) => pre + curr, 0);
+    const priceList = filteredData.map(x => x.price);
     const getPriceData = {
         low: Math.min(...priceList),
         high: Math.max(...priceList),
