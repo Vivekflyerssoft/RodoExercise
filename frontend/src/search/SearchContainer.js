@@ -17,7 +17,7 @@ export const SearchContainer = () => {
     }
 
     const handleSearchClick = () => {
-        fetch(`${API_URLS.VEHICLES_SUGGESTION}make=${searchData.make}&model=${searchData.model}&price=${searchData.price}&year=${searchData.year}`)
+        fetch(`${API_URLS.VEHICLES_SUGGESTION}make=${searchData.make || ''}&model=${searchData.model || ''}&price=${searchData.price}&year=${searchData.year}`)
             .then((res) => res.json())
             .then(data => setSearchResult(() => data));
     }

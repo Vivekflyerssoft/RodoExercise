@@ -30,9 +30,13 @@ const getVehicleSuggestion = async (make, model, price, year) => {
     const make_filter = make ? x => x.make === make : ignore_filter;
     const model_filter = model ? x => x.model === model : ignore_filter;
     const year_filter = year ? x => x.year === year : ignore_filter;
+
     const price_range_filter = price ? x => x.price > lower_range && x.price < higher_range : ignore_filter;
 
-    const filteredData = data.filter(make_filter && year_filter && price_range_filter && model_filter)
+    const filteredData = data.filter(make_filter)
+        .filter(model_filter)
+        .filter(year_filter)
+        .filter(price_range_filter);
 
     const total_vehicle_count = filteredData.map(x => x.vehicle_count).reduce((pre, curr) => pre + curr, 0);
     const priceList = filteredData.map(x => x.price);
