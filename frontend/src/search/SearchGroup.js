@@ -1,10 +1,26 @@
 import { useEffect, useState } from "react";
 import { API_URLS } from "../constants";
 
-export const SearchGroup = ({searchDataChanged}) => {
+export const SearchGroup = ({ searchDataChanged }) => {
+    const FIELDS = {
+        make: 'make',
+        model: 'model',
+        year: 'year',
+        price: 'price'
+    }
+
     const [makeAndModelsList, setMakeAndModelList] = useState([]);
     const [makeList, setMakeList] = useState([]);
     const [modelList, setModelList] = useState([]);
+
+    const [selectedMake, setSelectedMake] = useState('');
+    const [selectedModel, setSelectedModel] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
+    const [selectedPrice, setSelectedPrice] = useState('');
+
+    useEffect(() => {
+        notifySearchOptionsChanged();
+    }, [selectedMake, selectedModel, selectedYear, selectedPrice])
 
     useEffect(() => {
         fetch(API_URLS.VEHICLES)
@@ -13,64 +29,54 @@ export const SearchGroup = ({searchDataChanged}) => {
                 setMakeAndModelList(() => result);
                 setMakeList(() => makeAndModelsList.map(x => x.make));
             })
-    })
+    }, [makeAndModelsList.length])
 
-    const handleSelectFieldChange = (fieldId, value) => {
-        const searchData = {
-            make: '',
-            model: '',
-            price: '',
-            year: ''
+    const notifySearchOptionsChanged = () => {
+        const data = { make: selectedMake, model: selectedModel, year: selectedYear, price: selectedPrice };
+        searchDataChanged({ ...data });
+    }
+
+    const updateSelectedMake = (value) => {
+        let updateModel;
+        if (value) {
+            updateModel = makeAndModelsList.find(x => x.make === value).models;
+        } else {
+            updateModel = [];
         }
-        if (fieldId === 'make') {
-            if (value) {
-                const getMakeSpecificModels = () => makeAndModelsList.find(x => x.make === value).models;
-                setModelList(getMakeSpecificModels);
-            } else {
-                const clearModels = () => [];
-                setModelList(clearModels);
-            }
-            searchData.model = "";
-            searchData.make = value;
-        } else if (fieldId === 'model') {
-            searchData.model = value;
-        } else if (fieldId === 'year') {
-            searchData.year = value;
-        } else if (fieldId === 'price') {
-            searchData.price = value;
-        }
-        searchDataChanged({...searchData})
+        setModelList(updateModel);
+        setSelectedModel("");
+        setSelectedMake(value);
     }
 
     return (
         <div className="search_group">
             <SearchField
                 title="Make"
-                uId="make"
+                uId={FIELDS.make}
                 option_zero="All makes"
                 data={makeList}
-                onSelectOptionChanged={handleSelectFieldChange} />
+                onSelectOptionChanged={(value) => updateSelectedMake(value)} />
 
             <SearchField
                 title="Model"
-                uId="model"
+                uId={FIELDS.model}
                 option_zero="All models"
                 data={modelList}
-                onSelectOptionChanged={handleSelectFieldChange} />
+                onSelectOptionChanged={(value) => setSelectedModel(value)} />
 
             <SearchField
                 title="Year"
-                uId="year"
+                uId={FIELDS.year}
                 option_zero="Any"
                 data={[2022, 2021, 2020, 2019]}
-                onSelectOptionChanged={handleSelectFieldChange} />
+                onSelectOptionChanged={(value) => setSelectedYear(value)} />
 
             <SearchField
                 title="Price"
-                uId="price"
+                uId={FIELDS.price}
                 option_zero="No max price"
                 data={[2000, 4000, 6000, 8000]}
-                onSelectOptionChanged={handleSelectFieldChange} />
+                onSelectOptionChanged={(value) => setSelectedPrice(value)} />
         </div>
     )
 }
@@ -78,9 +84,10 @@ export const SearchGroup = ({searchDataChanged}) => {
 const SearchField = ({ title, uId, option_zero, data, onSelectOptionChanged }) => (
     <div className="select_field">
         <label>{title}</label>
-        <select id={uId} onChange={(e) => onSelectOptionChanged(uId, e.target.value)}>
+        <select id={uId} onChange={(e) => onSelectOptionChanged(e.target.value)}>
             <option key={option_zero} value="">{option_zero}</option>
             {data.map(make => <option key={make} value={make}>{make}</option>)}
         </select>
     </div >
 )
+

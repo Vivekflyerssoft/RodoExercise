@@ -40,6 +40,6 @@ export const SearchResultsDisplay = ({ searchResult }) => (
 
 
 const ResultRow = ({ make, model, count }) => (<tr>
-    <td><span className="make-sub-grp">{make}</span> <span className="model-sub-grp">{model}</span></td>
+    <td key={make + model}><span className="make-sub-grp">{make}</span> <span className="model-sub-grp">{model}</span></td>
     <td>{count}</td>
 </tr>)
