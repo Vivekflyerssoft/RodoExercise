@@ -24,8 +24,9 @@ app.get("/api/vehicles", async (req, res) => {
 
 app.get("/api/vehiclessuggestion", async (req, res) => {
     console.log(req.query);
-    const { make, model, year } = req.query;
+    const { make, model } = req.query;
     console.log(req.query.price);
+    const year = Number(req.query.year)
     const price = Number(req.query.price)
     const data = await vehiclesService.getVehicleSuggestion(make, model, price, year);
     return res.send(data);
