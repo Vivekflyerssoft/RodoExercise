@@ -27,7 +27,7 @@ export const SearchContainer = () => {
             <SearchGroup searchDataChanged={(value) => handleSearchDataChange(value)} />
             <button className="search_btn" onClick={() => handleSearchClick()}>Search</button>
             {
-                !searchResult ? <p>No result to display</p> : <SearchResultsDisplay searchResult={searchResult} />
+                !searchResult || searchResult.total === 0 ? <p>No result to display</p> : <SearchResultsDisplay searchResult={searchResult} />
             }
         </div>
     )
