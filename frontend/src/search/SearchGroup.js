@@ -1,53 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { API_URLS } from "../constants";
+import { FIELDS, PRICES_AVAILABLE, ACTIONS } from "./Constants";
+import { SearchContainerContext } from "./SearchContainer";
+import { SearchField } from "./SearchField";
 
-export const SearchGroup = ({ searchDataChanged }) => {
-    const FIELDS = {
-        make: 'make',
-        model: 'model',
-        year: 'year',
-        price: 'price'
-    }
-    const PRICES_AVAILABLE = [2000, 4000, 6000, 8000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000, 80000, 90000, 100000, 125000, 150000, 175000];
-
-    const [makeAndModelsList, setMakeAndModelList] = useState([]);
-    const [makeList, setMakeList] = useState([]);
+export const SearchGroup = () => {
+    const [makeAndModelsList, setMakeAndModelsList] = useState([]);
     const [modelList, setModelList] = useState([]);
 
-    const [selectedMake, setSelectedMake] = useState('');
-    const [selectedModel, setSelectedModel] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [selectedPrice, setSelectedPrice] = useState('');
-
-    useEffect(() => {
-        notifySearchOptionsChanged();
-    }, [selectedMake, selectedModel, selectedYear, selectedPrice])
+    const { dispatch } = useContext(SearchContainerContext)
 
     useEffect(() => {
         fetch(API_URLS.VEHICLES)
             .then(res => res.json())
-            .then(result => {
-                setMakeAndModelList(() => result);
-                setMakeList(() => makeAndModelsList.map(x => x.make));
-            })
-    }, [makeAndModelsList.length])
-
-    const notifySearchOptionsChanged = () => {
-        const data = { make: selectedMake, model: selectedModel, year: selectedYear, price: selectedPrice };
-        searchDataChanged({ ...data });
-    }
-
-    const updateSelectedMake = (value) => {
-        let updateModel;
-        if (value) {
-            updateModel = makeAndModelsList.find(x => x.make === value).models;
-        } else {
-            updateModel = [];
-        }
-        setModelList(updateModel);
-        setSelectedModel("");
-        setSelectedMake(value);
-    }
+            .then(result => setMakeAndModelsList(result))
+    }, [])
 
     return (
         <div className="search_group">
@@ -55,40 +22,35 @@ export const SearchGroup = ({ searchDataChanged }) => {
                 title="Make"
                 uId={FIELDS.make}
                 option_zero="All makes"
-                data={makeList}
-                onSelectOptionChanged={(value) => updateSelectedMake(value)} />
+                data={makeAndModelsList.map(x => x.make)}
+                onSelectOptionChanged={(value) => {
+                    dispatch({ type: ACTIONS.MAKE, payload: value })
+                    setModelList(value ? makeAndModelsList.find(x => x.make === value).models : [])
+                }} />
 
             <SearchField
                 title="Model"
                 uId={FIELDS.model}
                 option_zero="All models"
                 data={modelList}
-                onSelectOptionChanged={(value) => setSelectedModel(value)} />
+                onSelectOptionChanged={(value) => dispatch({ type: ACTIONS.MODEL, payload: value })} />
 
             <SearchField
                 title="Year"
                 uId={FIELDS.year}
                 option_zero="Any"
                 data={[2022, 2021, 2020, 2019]}
-                onSelectOptionChanged={(value) => setSelectedYear(value)} />
+                onSelectOptionChanged={(value) => dispatch({ type: ACTIONS.YEAR, payload: value })} />
 
             <SearchField
                 title="Price"
                 uId={FIELDS.price}
                 option_zero="No max price"
                 data={PRICES_AVAILABLE}
-                onSelectOptionChanged={(value) => setSelectedPrice(value)} />
+                onSelectOptionChanged={(value) => dispatch({ type: ACTIONS.PRICE, payload: value })} />
         </div>
     )
 }
 
-const SearchField = ({ title, uId, option_zero, data, onSelectOptionChanged }) => (
-    <div className="select_field">
-        <label>{title}</label>
-        <select id={uId} onChange={(e) => onSelectOptionChanged(e.target.value)}>
-            <option key={option_zero} value="">{option_zero}</option>
-            {data.map(make => <option key={make} value={make}>{make}</option>)}
-        </select>
-    </div >
-)
+
 
